@@ -44,3 +44,11 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+## Attributions
+Card suit icons
+ - Spade by P Thanga Vignesh from NounProject.com
+ - Diamond by P Thanga Vignesh from NounProject.com
+ - Clubs by P Thanga Vignesh from NounProject.com
+ - Hearts by P Thanga Vignesh from NounProject.com
