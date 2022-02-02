@@ -43,34 +43,34 @@ const Value = styled.p`
 `;
 
 interface DealerProps {
-	value: number;
+	count: number;
 }
 
-export const ChipCount: React.FC<DealerProps> = ({ value = 0 }) => {
+export const ChipCount: React.FC<DealerProps> = ({ count = 0 }) => {
 	const spanRef = useRef(null);
-	const prevValue = useRef(0);
+	const prevCount = useRef(0);
 
 	useEffect(() => {
 		const span = spanRef.current;
 
-		const controls = animate(prevValue.current, value, {
-			duration: Math.abs(value - prevValue.current) * 0.01,
-			onUpdate(value) {
+		const controls = animate(prevCount.current, count, {
+			duration: 0.8,
+			onUpdate(count) {
 				if (span != null)
-					(span as HTMLSpanElement).textContent = value.toFixed(0);
+					(span as HTMLSpanElement).textContent = count.toFixed(0);
 			},
 		});
 
-		prevValue.current = value;
+		prevCount.current = count;
 
 		return () => controls.stop();
-	}, [value]);
+	}, [count]);
 
 	return (
 		<Container>
 			<Icon />
 			<Value>
-				<span ref={spanRef}>{value}</span>
+				<span ref={spanRef}>{count}</span>
 			</Value>
 		</Container>
 	);
