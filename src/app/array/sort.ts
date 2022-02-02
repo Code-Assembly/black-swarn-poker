@@ -1,4 +1,4 @@
-type GreaterThanFn = <T>(a: T, b: T) => boolean;
+export type GreaterThanFn = <T>(a: T, b: T) => boolean;
 
 const greaterThan: GreaterThanFn = (a, b) => a > b;
 
