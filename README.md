@@ -52,3 +52,4 @@ Card suit icons
  - Diamond by P Thanga Vignesh from NounProject.com
  - Clubs by P Thanga Vignesh from NounProject.com
  - Hearts by P Thanga Vignesh from NounProject.com
+ - Dollar Chip by nareerat jaikaew from NounProject.com
