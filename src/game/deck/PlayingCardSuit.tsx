@@ -2,12 +2,12 @@ import React from 'react';
 
 import styled, { css } from 'styled-components';
 
-import { CardSuit } from 'game/models/PlayingCardT.model';
+import { CardSuit } from 'game/models/PlayingCard.model';
 
-import { ReactComponent as DiamondIconSVG } from 'assets/icons/diamond.svg';
-import { ReactComponent as SpadeIconSVG } from 'assets/icons/spade.svg';
-import { ReactComponent as HeartIconSVG } from 'assets/icons/heart.svg';
 import { ReactComponent as ClubIconSVG } from 'assets/icons/club.svg';
+import { ReactComponent as DiamondIconSVG } from 'assets/icons/diamond.svg';
+import { ReactComponent as HeartIconSVG } from 'assets/icons/heart.svg';
+import { ReactComponent as SpadeIconSVG } from 'assets/icons/spade.svg';
 
 const suitIconStyle = css`
 	fill: #fff;
