@@ -1,25 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+
 import reportWebVitals from './reportWebVitals';
 
-import { store } from 'app/store';
-import { Provider } from 'react-redux';
-import styled from 'styled-components';
 import { FiveCardPoker } from 'game/FiveCardPoker';
+import { Provider } from 'react-redux';
+import { store } from 'app/store';
 
-const Main = styled.main`
-	display: flex;
-	width: 100vw;
-	min-height: 100vh;
-`;
+import './index.css';
 
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<Main>
-				<FiveCardPoker />
-			</Main>
+			<FiveCardPoker />
 		</Provider>
 	</React.StrictMode>,
 	document.getElementById('root')
