@@ -1,44 +1,16 @@
-import { ACE, IPlayingCard } from 'game/models/PlayingCard.model';
-
-export type HandRank =
-	| 'Royal Flush'
-	| 'Straight Flush'
-	| 'Four of a Kind'
-	| 'Full House'
-	| 'Flush'
-	| 'Straight'
-	| 'Three of a Kind'
-	| 'Two Pair'
-	| 'Pair'
-	| 'High Card';
-
-export const HandRankOrder: { [rank in HandRank]: number } = {
-	'Royal Flush': 1,
-	'Straight Flush': 2,
-	'Four of a Kind': 3,
-	'Full House': 4,
-	Flush: 5,
-	Straight: 6,
-	'Three of a Kind': 7,
-	'Two Pair': 8,
-	Pair: 9,
-	'High Card': 10,
-} as const;
+import {
+	ACE,
+	CardPrimeRank,
+	IPlayingCard,
+} from 'game/models/PlayingCard.model';
+import {
+	HandRank,
+	HandRankOrder,
+	HandRankProbability,
+} from 'game/models/HandRank.model';
 
 export const getHandRankOrder = (handRank: HandRank) => HandRankOrder[handRank];
 
-export const HandRankProbability: { [rank in HandRank]: number } = {
-	'Royal Flush': 0.000154,
-	'Straight Flush': 0.0015,
-	'Four of a Kind': 0.0256,
-	'Full House': 0.17,
-	Flush: 0.367,
-	Straight: 0.76,
-	'Three of a Kind': 2.87,
-	'Two Pair': 7.62,
-	Pair: 49.9,
-	'High Card': 100,
-} as const;
 export const getHandRankProbability = (handRank: HandRank) =>
 	HandRankProbability[handRank];
 
@@ -99,19 +71,19 @@ const groupHand = (hand: Array<IPlayingCard>): Map<number, number> => {
 
 // We can assign each hand a unique value by deriving a key from the set counts
 const GroupMap: { [key: number]: HandRank } = {
-	// K-K-K-K-Q
+	// [17] eg. K-K-K-K-Q
 	[(4 ^ 2) + (1 ^ 2)]: 'Four of a Kind',
-	// K-K-K-Q-Q
+	// [13] eg. K-K-K-Q-Q
 	[(3 ^ 2) + (2 ^ 2)]: 'Full House',
-	// K-K-K-7-5
+	// [11] .eg K-K-K-7-5
 	[(3 ^ 2) + (1 ^ 2) + (1 ^ 2)]: 'Three of a Kind',
-	// 7-7-7-4-5
+	// [9] eg. 7-7-7-4-5
 	[(2 ^ 2) + (2 ^ 2) + (1 ^ 2)]: 'Two Pair',
-	// A-A-7-2-5
+	// [7] eg. A-A-7-2-5
 	[(2 ^ 2) + (1 ^ 2) + (1 ^ 2) + (1 ^ 2)]: 'Pair',
 } as const;
 
-const groupHandValue = (groups: Map<number, number>): HandRank | null => {
+const getGroupHandRank = (groups: Map<number, number>): HandRank | null => {
 	let handValue = 0;
 	groups.forEach((value, key) => {
 		handValue += value ^ 2;
@@ -136,12 +108,66 @@ export const rankHand = (hand: Array<IPlayingCard>): HandRank => {
 	// Count groups
 	const groups = groupHand(hand);
 	// Rank the grouped hand
-	const groupedHandRank = groupHandValue(groups);
+	const groupedHandRank = getGroupHandRank(groups);
 
 	if (groupedHandRank != null) {
 		return groupedHandRank;
 	}
 
+	if (flushSuit) return 'Flush';
+	if (straightHand) return 'Straight';
+
 	return 'High Card';
 };
 
+const getPrimeProductRank = (hand: Array<IPlayingCard>) => {
+	return hand.reduce((product: number, card: IPlayingCard) => {
+		return CardPrimeRank[card.rank.toString()] * product;
+	}, 1);
+};
+
+export const compareHandsByRank = (
+	handA: Array<IPlayingCard>,
+	handB: Array<IPlayingCard>
+): number => {
+	const rankA = rankHand(handA);
+	const rankB = rankHand(handB);
+
+	if (rankA !== rankB) {
+		return HandRankOrder[rankA] - HandRankOrder[rankB];
+	}
+
+	switch (rankA) {
+		case 'Royal Flush':
+			return 0;
+
+		case 'Straight Flush':
+			return getPrimeProductRank(handA) - getPrimeProductRank(handB);
+
+		case 'Four of a Kind':
+			const handAKicker =
+				handA[0].rank === handA[1].rank
+					? handA[handA.length - 1]
+					: handA[0];
+
+			const handBKicker =
+				handB[0].rank === handB[1].rank
+					? handB[handB.length - 1]
+					: handB[0];
+
+			return handAKicker.rank - handBKicker.rank;
+
+		// Caveat sets are not carefully ranked
+		// TODO: Grouped sets should compare groups before kickers
+		case 'Full House':
+		case 'Flush':
+		case 'Straight':
+		case 'Three of a Kind':
+		case 'Two Pair':
+		case 'Pair':
+		case 'High Card':
+			return getPrimeProductRank(handA) - getPrimeProductRank(handB);
+	}
+
+	return 0;
+};
