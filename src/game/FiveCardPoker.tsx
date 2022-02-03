@@ -45,9 +45,7 @@ const Guests = styled.section`
 	justify-content: space-evenly;
 `;
 
-interface FiveCardPokerProps {}
-
-export const FiveCardPoker: React.FC<FiveCardPokerProps> = () => {
+export const FiveCardPoker = () => {
 	const game: IGame = useSelector((state: RootState) => state.game);
 	const displayWinnerNotice: boolean = useSelector((state: RootState) => {
 		return (
@@ -56,8 +54,10 @@ export const FiveCardPoker: React.FC<FiveCardPokerProps> = () => {
 			state.game.lastWinner !== null
 		);
 	});
-	// const roundWinner: IPlayer = useSelector((state: RootState) => state.game);
 
+	// Recursively runs the game logic for each round
+	// The delays are placeholders for both async actions
+	// and the animations
 	const playGame = async () => {
 		let transition = gameTick();
 

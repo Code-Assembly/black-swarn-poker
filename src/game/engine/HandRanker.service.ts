@@ -25,7 +25,7 @@ const isFlush = (hand: Array<IPlayingCard>): boolean => {
 };
 
 /**
- * Detects a hand with a sequence that decereses by one with each card
+ * Detects a hand with a sequence that decreases by one with each card
  * e.g. K-10-9-8-7 or 7-6-5-4-3
  *
  * @param hand - sorted hand ranked form highest [0] to lowest card [5]
@@ -38,26 +38,6 @@ const isStraight = (hand: Array<IPlayingCard>): boolean => {
 		// the current card rank must be sequentially smaller that the previous one
 		return card.rank === hand[index - 1].rank - 1;
 	});
-};
-
-/**
- * Detects a hand with the sequence of A-K-Q-J-10
- *
- * @param hand - sorted hand ranked form highest [0] to lowest card [5]
- * @returns true if hand matches the sequence A-K-Q-J-10
- */
-const isRoyalFlush = (hand: Array<IPlayingCard>) => {
-	if (!isFlush(hand)) return false;
-
-	// first card must be an ACE
-	if (hand[0].rank !== ACE) return false;
-
-	return isStraight(hand);
-};
-
-const isStraightFlush = (hand: Array<IPlayingCard>) => {
-	if (!isFlush(hand)) return false;
-	return isStraight(hand);
 };
 
 const groupHand = (hand: Array<IPlayingCard>): Map<number, number> => {

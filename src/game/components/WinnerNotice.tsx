@@ -34,11 +34,6 @@ const Chip = styled(ChipSVG)`
 
 	fill: #eee;
 `;
-const Count = styled.div`
-	font-size: 1.5em;
-	line-height: 2;
-	display: flex;
-`;
 
 const Details = styled.div`
 	flex: none;
