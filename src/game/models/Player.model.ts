@@ -1,11 +1,17 @@
-import { PlayingCardT } from 'game/models/PlayingCardT.model';
-import { HandRank } from '../FiveCardHandRanker.service';
+import { HandRank } from 'game/engine/HandRanker.service';
+
+import { IPlayingCard } from 'game/models/PlayingCard.model';
 
 export interface IPlayer {
-	name: String;
-	hand: Array<PlayingCardT>;
+	id: string;
+	name: string;
+	//
+	hand: Array<IPlayingCard>;
 	handRank: HandRank;
 	bank: number;
+	//
+	revealHand: boolean;
+	//
 	actor: 'User' | 'Ai';
-	state: 'In' | 'Out';
+	playState: 'In' | 'Out' | 'Folded';
 }

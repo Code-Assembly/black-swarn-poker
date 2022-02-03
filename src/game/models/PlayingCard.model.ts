@@ -1,9 +1,9 @@
 export type CardSuit = 'Spades' | 'Hearts' | 'Diamonds' | 'Clubs';
 
-export type PlayingCardT = {
+export interface IPlayingCard {
 	suit: CardSuit;
 	rank: number;
-};
+}
 
 // Ranking for non numeric cards
 export const ACE = 14;
@@ -11,8 +11,8 @@ export const KING = 13;
 export const QUEEN = 12;
 export const JACK = 11;
 
-// Rank
-
+// FUTURE: implement a variation of Cactus Kev's algorithm
+// http://suffe.cool/poker/evaluator.html
 export const CardRank = {
 	ACE: 41,
 	KING: 37,
@@ -28,12 +28,3 @@ export const CardRank = {
 	TREY: 3,
 	DEUCE: 2,
 } as const;
-
-const RoyalFlush =
-	CardRank.ACE *
-	CardRank.KING *
-	CardRank.QUEEN *
-	CardRank.JACK *
-	CardRank.TEN;
-
-	

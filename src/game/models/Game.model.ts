@@ -1,24 +1,24 @@
-import { PlayingCardT } from 'game/models/PlayingCardT.model';
 import { IPlayer } from 'game/models/Player.model';
+import { IPlayingCard } from 'game/models/PlayingCard.model';
 
-export type PlayStates =
-	| 'Start'
+export type StateOfPlay =
+	| 'Ready'
+	| 'New Game'
 	| 'Shuffle'
 	| 'Ante'
 	| 'Deal'
 	| 'Draw'
-	| 'Bet'
 	| 'Showdown';
 
 export interface IGame {
+	// Game
 	players: Array<IPlayer>;
-	deck: Array<PlayingCardT>;
-	stateOfPlay: PlayStates;
+	deck: Array<IPlayingCard>;
+	stateOfPlay: StateOfPlay;
+
+	ante: number;
+	// Round
 	pot: number;
 	lastBet: number;
-	ante: number;
 	round: number;
-	//
-	shuffleDeck: (deck: Array<PlayingCardT>) => Array<PlayingCardT>;
-	sortHand: (hand: Array<PlayingCardT>) => Array<PlayingCardT>;
 }
