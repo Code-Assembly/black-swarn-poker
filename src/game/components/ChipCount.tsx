@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { ReactComponent as ChipSVG } from 'assets/icons/chip.svg';
 
-const Icon = styled(ChipSVG)`
+const Chip = styled(ChipSVG)`
 	height: 2em;
 	display: inline-block;
 	width: auto;
@@ -68,7 +68,7 @@ export const ChipCount: React.FC<DealerProps> = ({ count = 0 }) => {
 
 	return (
 		<Container>
-			<Icon />
+			<Chip />
 			<Value>
 				<span ref={spanRef}>{count}</span>
 			</Value>

@@ -57,8 +57,8 @@ const MotionStackedPlayingCardVariants = {
 		rotateZ: 360,
 		transition: {
 			type: 'tween',
-			duration: 0.7,
-			ease: 'easeInOut',
+			duration: 0.5,
+			ease: 'easeIn',
 			delay: 0.02 * order,
 		},
 	}),

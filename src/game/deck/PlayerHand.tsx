@@ -1,16 +1,14 @@
 import React from 'react';
 
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 
 import { IPlayingCard } from 'game/models/PlayingCard.model';
 
 import { PlayingCard, PlayingCardFrame } from 'game/deck/PlayingCard';
 
-const Stack = styled.div<{ showCards: boolean }>`
+const Stack = styled.div`
 	position: relative;
-	transform: scale(0.76)
-		rotateY(${({ showCards }) => (showCards ? 180 : 0)}deg);
 	transform-origin: 50% 100%;
 	transform-style: preserve-3d;
 `;
@@ -26,19 +24,39 @@ const StackedPlayingCard = styled(PlayingCard)<{ order: number }>`
 
 // Animation
 const MotionStackVariants = {
+	initial: {
+		opacity: 0,
+		scale: 0.76,
+		rotateY: 0,
+	},
+
 	enter: {
 		opacity: 1,
+		rotateY: 0,
 		transition: {
-			duration: 1,
-			when: 'beforeChildren',
-			staggerChildren: 0.15,
+			type: 'tween',
+			duration: 0.8,
+			ease: 'easeOut',
 		},
 	},
+
 	exit: {
 		opacity: 0,
+		rotateY: 0,
 		transition: {
-			duration: 1,
-			when: 'afterChildren',
+			type: 'tween',
+			duration: 0.8,
+			ease: 'easeOut',
+		},
+	},
+
+	reveal: {
+		opacity: 1,
+		rotateY: 180,
+		transition: {
+			type: 'tween',
+			duration: 0.8,
+			ease: 'easeOut',
 		},
 	},
 };
@@ -48,16 +66,18 @@ const MotionStackedPlayingCardVariants = {
 		rotateZ: Math.floor(0.5 * total - card) * 12,
 		transition: {
 			type: 'spring',
-			duration: 0.8,
+			duration: 0.7,
 			bounce: 0.5,
+			delay: 0.4 + 0.15 * card,
 		},
 	}),
+
 	exit: {
 		rotateZ: 0,
 		transition: {
 			type: 'tween',
-			duration: 0.8,
-			ease: 'easeIn',
+			duration: 0.6,
+			ease: 'backIn',
 		},
 	},
 };
@@ -67,26 +87,32 @@ const MotionStackedPlayingCard = motion(StackedPlayingCard);
 
 export const PlayerHand: React.FC<{
 	hand: Array<IPlayingCard>;
-	showHand?: boolean;
-}> = ({ hand, showHand = false }) => {
+	reveal?: boolean;
+}> = ({ hand, reveal = false }) => {
 	return (
-		<MotionStack
-			showCards={showHand}
-			custom={showHand}
-			variants={MotionStackVariants}
-			initial="exit"
-			animate="enter"
-		>
-			{hand.map((card: IPlayingCard, order) => (
-				<MotionStackedPlayingCard
-					key={`${card.suit}_${card.rank}`}
-					card={card}
-					order={order}
-					custom={{ card: order, total: hand.length }}
-					variants={MotionStackedPlayingCardVariants}
-				/>
-			))}
-			<PlayingCardFrame />
-		</MotionStack>
+		<AnimatePresence>
+			<MotionStack
+				variants={MotionStackVariants}
+				initial="initial"
+				animate={reveal ? 'reveal' : 'enter'}
+				exit="exit"
+			>
+				<AnimatePresence>
+					{hand.map((card: IPlayingCard, order) => (
+						<MotionStackedPlayingCard
+							key={`${card.suit}_${card.rank}`}
+							card={card}
+							order={order}
+							custom={{ card: order, total: hand.length }}
+							variants={MotionStackedPlayingCardVariants}
+							initial="ini"
+							animate="enter"
+							exit="exit"
+						/>
+					))}
+				</AnimatePresence>
+				<PlayingCardFrame />
+			</MotionStack>
+		</AnimatePresence>
 	);
 };
