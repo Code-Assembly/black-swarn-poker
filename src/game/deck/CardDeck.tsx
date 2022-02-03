@@ -1,22 +1,14 @@
 import React from 'react';
 
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 
 import { IPlayingCard } from 'game/models/PlayingCard.model';
 
 import { PlayingCard, PlayingCardFrame } from 'game/deck/PlayingCard';
 
-const Container = styled.div`
-	position: relative;
-`;
-
 const Stack = styled.div`
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
+	position: relative;
 `;
 
 const PlaceHolder = styled(PlayingCardFrame)`
@@ -35,18 +27,21 @@ const StackedPlayingCard = styled(PlayingCard)<{ order: number }>`
 
 // Animation
 const MotionStackVariants = {
-	initial: {},
-
 	enter: {
+		opacity: 1,
 		transition: {
-			staggerChildren: 0.02,
+			type: 'tween',
+			ease: 'easeIn',
+			duration: 0.5,
 		},
 	},
 
 	exit: {
+		opacity: 0,
 		transition: {
-			staggerChildren: 0.02,
-			when: 'afterChildren',
+			type: 'tween',
+			ease: 'easeOut',
+			duration: 0.5,
 		},
 	},
 };
@@ -57,25 +52,27 @@ const MotionStackedPlayingCardVariants = {
 		opacity: 0,
 	},
 
-	enter: {
+	enter: ({ order }: { order: number; numCards: number }) => ({
 		opacity: 1,
 		rotateZ: 360,
 		transition: {
 			type: 'tween',
 			duration: 0.7,
 			ease: 'easeInOut',
+			delay: 0.02 * order,
 		},
-	},
+	}),
 
-	exit: {
-		y: '100%',
+	exit: ({ order, numCards }: { order: number; numCards: number }) => ({
+		translateX: '-100%',
 		opacity: 0,
 		transition: {
 			type: 'tween',
-			duration: 0.7,
+			duration: 0.3,
 			ease: 'easeOut',
+			delay: Math.abs(numCards - order) * 0.02,
 		},
-	},
+	}),
 };
 
 const MotionStack = motion(Stack);
@@ -85,25 +82,29 @@ export const CardDeck: React.FC<{
 	deck: Array<IPlayingCard>;
 }> = ({ deck }) => {
 	return (
-		<Container>
-			<PlaceHolder />
-			{deck.length > 0 && (
-				<MotionStack
-					variants={MotionStackVariants}
-					initial="initial"
-					animate="enter"
-					exit="exit"
-				>
+		<AnimatePresence>
+			<MotionStack
+				variants={MotionStackVariants}
+				initial="exit"
+				animate="enter"
+				exit="exit"
+			>
+				<PlaceHolder />
+				<AnimatePresence>
 					{deck.map((card: IPlayingCard, order) => (
 						<MotionStackedPlayingCard
 							key={`${card.suit}_${card.rank}`}
 							card={card}
 							order={order}
+							custom={{ order, numCards: deck.length }}
 							variants={MotionStackedPlayingCardVariants}
+							initial="initial"
+							animate="enter"
+							exit="exit"
 						/>
 					))}
-				</MotionStack>
-			)}
-		</Container>
+				</AnimatePresence>
+			</MotionStack>
+		</AnimatePresence>
 	);
 };

@@ -11,7 +11,7 @@ const Stack = styled.div<{ showCards: boolean }>`
 	position: relative;
 	transform: scale(0.76)
 		rotateY(${({ showCards }) => (showCards ? 180 : 0)}deg);
-
+	transform-origin: 50% 100%;
 	transform-style: preserve-3d;
 `;
 
@@ -45,7 +45,7 @@ const MotionStackVariants = {
 
 const MotionStackedPlayingCardVariants = {
 	enter: ({ card, total }: { card: number; total: number }) => ({
-		rotateZ: (0.5 * total - card) * 12,
+		rotateZ: Math.floor(0.5 * total - card) * 12,
 		transition: {
 			type: 'spring',
 			duration: 0.8,
