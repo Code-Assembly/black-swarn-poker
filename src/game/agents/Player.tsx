@@ -57,10 +57,11 @@ export const Player: React.FC<PlayerProps> = ({ player }) => {
 				</PlayerName>
 			</PlayerDetail>
 			{player.actor === 'User' && (
+				// TODO: These are placeholders for user actions
 				<div>
-					<button>Call</button>
-					<button>Raise</button>
-					<button>Fold</button>
+					<span>Call</span>
+					<span> Raise </span>
+					<span>Fold</span>
 				</div>
 			)}
 		</Seat>
