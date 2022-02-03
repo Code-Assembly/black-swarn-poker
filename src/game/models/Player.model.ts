@@ -1,5 +1,4 @@
-import { HandRank } from 'game/engine/HandRanker.service';
-
+import { HandRank } from 'game/models/HandRank.model';
 import { IPlayingCard } from 'game/models/PlayingCard.model';
 
 export interface IPlayer {

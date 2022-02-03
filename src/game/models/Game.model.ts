@@ -8,7 +8,8 @@ export type StateOfPlay =
 	| 'Ante'
 	| 'Deal'
 	| 'Draw'
-	| 'Showdown';
+	| 'Showdown'
+	| 'Game Over';
 
 export interface IGame {
 	// Game
@@ -21,4 +22,5 @@ export interface IGame {
 	pot: number;
 	lastBet: number;
 	round: number;
+	lastWinner: IPlayer | null;
 }
