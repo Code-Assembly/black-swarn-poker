@@ -14,6 +14,7 @@ import { Player } from 'game/agents/Player';
 import { WinnerNotice } from 'game/components/WinnerNotice';
 
 import { gameTick } from 'game/engine/GameMachine';
+import { AnimatePresence } from 'framer-motion';
 
 const Container = styled.main`
 	display: flex;
@@ -109,16 +110,18 @@ export const FiveCardPoker = () => {
 							<Button onClick={playGame}>Next Round</Button>
 						)}
 					</Dealer>
-					{displayWinnerNotice && (
-						<WinnerNotice
-							winner={game.lastWinner!}
-							victory={
-								game.stateOfPlay === 'Game Over'
-									? 'Game'
-									: 'Round'
-							}
-						/>
-					)}
+					<AnimatePresence>
+						{displayWinnerNotice && (
+							<WinnerNotice
+								winner={game.lastWinner!}
+								victory={
+									game.stateOfPlay === 'Game Over'
+										? 'Game'
+										: 'Round'
+								}
+							/>
+						)}
+					</AnimatePresence>
 				</House>
 				<Guests>
 					{game.players.map((player, i) => (

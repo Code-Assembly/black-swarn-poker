@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 import { IPlayer } from 'game/models/Player.model';
@@ -12,15 +12,14 @@ const Notice = styled.div`
 	display: flex;
 	align-items: center;
 
-    
 	padding: 1rem 2rem 1rem 1rem;
 	border-radius: 0.5rem;
-    
+
 	background-color: #ff4e00;
 	background-image: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%);
-    
+
 	position: absolute;
-    left: 2rem;
+	left: 2rem;
 	z-index: 1000;
 `;
 
@@ -100,19 +99,17 @@ export const WinnerNotice: React.FC<WinnerNoticeProps> = ({
 		victory === 'Game' ? `Won the GAME!` : 'Took the Round!';
 
 	return (
-		<AnimatePresence>
-			<MotionNotice
-				variants={motionNoticeVariants}
-				initial="initial"
-				animate="enter"
-				exit="exit"
-			>
-				<Chip />
-				<Details>
-					<h1>{player.name}</h1>
-					<h2>{victoryText}</h2>
-				</Details>
-			</MotionNotice>
-		</AnimatePresence>
+		<MotionNotice
+			variants={motionNoticeVariants}
+			initial="initial"
+			animate="enter"
+			exit="exit"
+		>
+			<Chip />
+			<Details>
+				<h1>{player.name}</h1>
+				<h2>{victoryText}</h2>
+			</Details>
+		</MotionNotice>
 	);
 };
